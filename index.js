@@ -1,9 +1,9 @@
-const figlet = require("figlet");
-figlet("Hello World!!",function (err, data) {
-if (err) {
-console.log("Something went wrong...");
-console.dir(err);
-return;
-}
-console.log(data);
-});
+const express = require('express');
+const {connectToMongoDB} = require('./connect');
+const urlRoute = require('./routes/url');
+const app = express();
+const PORT = 3000;
+connectToMongoDB('mongodb://localhost:27017/short-url')
+.then(()=> console.log('mongodb connected'));
+app.use("/url",urlRoute);
+app.listen(PORT,() => console.log(`Server started at the port:${PORT}`))
