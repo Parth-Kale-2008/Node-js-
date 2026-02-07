@@ -1,18 +1,6 @@
-const mongoose = require('mongoose');
-const urlSchema = new mongoose.Schema({
-    shortId:{
-        type:String,
-        required:true,
-        unique:true,
-    },
-    redirectUrl:{
-        type:String,
-        required:true,
-    },
-    visitHistory:[{timeStamp:{type:Number}}],
-},
-{timeStamp:true}
-);
+const express = require('express');
+const {handleGenerateNewShortURL} = require('../controller/url');
+const router = express.Router();
+router.post = ("/",handleGenerateNewShortURL);
+module.exports = router;
 
-const URL = mongoose.model('url',urlSchema);
-module.exports = URL;
