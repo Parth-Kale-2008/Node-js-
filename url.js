@@ -1,18 +1,17 @@
-const mongoose = require('mongoose');
-const urlSchema = new mongoose.Schema({
-    shortId:{
-        type:String,
-        required:true,
-        unique:true,
-    },
-    redirectUrl:{
-        type:String,
-        required:true,
-    },
-    visitHistory:[{timeStamp:{type:Number}}],
-},
-{timeStamp:true}
-);
+const shortid = require("shortid");
+const URL = require('../models/url');
+async function handleGenerateNewShortURL(req,res){
+    const body = req.body;
+        if(!body.url) return res.status(400).json({error:'url is required'});
+    const shortID = shortid();
+    await URL.create({
+        shortId:shortID,
+        redirectURL:body.url,
+        visitedHistory:[],
+    });
+    return res.json({id: shortID});
+}
 
-const URL = mongoose.model('url',urlSchema);
-module.exports = URL;
+module.exports = {
+    handleGenerateNewShortURL,
+}
